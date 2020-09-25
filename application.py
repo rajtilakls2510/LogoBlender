@@ -70,4 +70,4 @@ def generate():
 
     return path
 
-app.run()
+app.run(debug=True)
