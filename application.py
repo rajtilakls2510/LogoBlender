@@ -69,3 +69,5 @@ def generate():
     cv2.imwrite(path,blended)
 
     return path
+
+app.run()
