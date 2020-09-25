@@ -69,5 +69,5 @@ def generate():
     cv2.imwrite(path,blended)
 
     return path
-
-app.run(debug=True)
+if __name__=="__main__":
+    app.run()
