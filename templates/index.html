@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head xmlns="http://www.w3.org/1999/xhtml">
+    <meta charset="UTF-8">
+    <title>Logo Putter</title>
+    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+</head>
+<body class="bg-dark">
+
+<div class="container">
+    <div class="row">
+        <div class="card mt-50" style="width: 100%; height: 100%">
+            <div class="card-header" style="text-align: center">
+                <h1>Put Logo on an Image</h1>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12" style="text-align: center">
+                        <h3>Please upload your original image and logo image:  </h3>
+                    </div>
+                </div>
+
+                <div class="row" >
+                    <div class="col-6 original_image_div" style="text-align: center">
+
+                        </div>
+                    <div class="col-6 logo_image_div" style="text-align: center">
+
+                        </div>
+                </div>
+
+                <div class="row" >
+                    <div class="col-6" style="text-align: center">
+                        <label><b>Choose Original Image</b></label><br>
+                        <input type="file" class="btn btn-primary" id="original_image" name="original_image" onchange="upload_original()" >
+                    </div>
+                    <div class="col-6" style="text-align: center">
+                        <label><b>Choose Logo Image</b></label><br>
+                        <input type="file" class="btn btn-primary" id="logo_image" name="logo_image" onchange="upload_logo()" >
+                    </div>
+                </div>
+
+                <br>
+                <div class="row">
+
+                    <div class="col-12 blended_image_div" style="text-align: center">
+
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-12" style="text-align: center">
+                        <button class="btn btn-warning" onclick="generate_blended()">Generate Blended Logo</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12" style="text-align: right">
+                        <span >By Rajtilak Pal </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    function upload_original()
+    {
+        let formData = new FormData();
+        formData.append("original_image", document.getElementById("original_image").files[0]);
+         let xhr = new XMLHttpRequest();
+          xhr.open("POST", "/upload_original",true);
+          xhr.send(formData);
+          xhr.onload = () => {
+          document.getElementsByClassName("original_image_div")[0].innerHTML = `<img src=`+xhr.response+` >`;
+          }
+
+          xhr.onprogress = function(event) {
+      // report progress
+      alert(`Uploaded ${event.loaded} of ${event.total}`);
+};
+    }
+
+    function upload_logo()
+    {
+        let formData = new FormData();
+        formData.append("logo_image", document.getElementById("logo_image").files[0]);
+         let xhr = new XMLHttpRequest();
+          xhr.open("POST", "/upload_logo",true);
+          xhr.send(formData);
+          xhr.onload = () => {
+          document.getElementsByClassName("logo_image_div")[0].innerHTML = `<img src=`+xhr.response+` >`;
+          }
+
+          xhr.onprogress = function(event) {
+      // report progress
+      alert(`Uploaded ${event.loaded} of ${event.total}`);
+};
+    }
+
+    function generate_blended()
+    {
+
+
+        let xhr = new XMLHttpRequest();
+          xhr.open("GET", "/generate",true);
+          xhr.send();
+          xhr.onload = () =>
+          {
+            document.getElementsByClassName("blended_image_div")[0].innerHTML = `<img  src=`+xhr.response+` ><br><br> <a href=`+xhr.response+` class="btn btn-primary" download="BlendedLogo" > Download </a>`;
+
+          }
+        /*   var nods = document.getElementsByClassName('NO-CACHE');
+for (var i = 0; i < nods.length; i++)
+{
+    nods[i].attributes['src'].value += "?a=" + Math.random();
+}*/
+
+    }
+
+
+
+
+</script>
+
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+        crossorigin="anonymous"></script>
+</body>
+</html>
